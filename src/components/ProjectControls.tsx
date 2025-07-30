@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useProject } from '../context/ProjectContext';
 import { downloadJSON, downloadCSV, copyJSONToClipboard, parseJSONProject, exportAsCSV } from '../utils/exportUtils';
+import { SAMPLE_FILES, getSampleTitle } from '../utils/sampleData';
 
 export const ProjectControls: React.FC = () => {
   const { state, loadProject, loadSampleProject } = useProject();
@@ -8,6 +9,7 @@ export const ProjectControls: React.FC = () => {
   const [showJsonInput, setShowJsonInput] = useState(false);
   const [message, setMessage] = useState('');
   const [isCtrlPressed, setIsCtrlPressed] = useState(false);
+  const [showSampleDropdown, setShowSampleDropdown] = useState(false);
 
   // Track Ctrl/Cmd key state for visual feedback
   useEffect(() => {
@@ -26,21 +28,48 @@ export const ProjectControls: React.FC = () => {
     // Also handle focus/blur to reset state when window loses focus
     const handleBlur = () => setIsCtrlPressed(false);
 
+    // Handle clicks outside dropdown to close it
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.sample-dropdown-container')) {
+        setShowSampleDropdown(false);
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('blur', handleBlur);
+    document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
       window.removeEventListener('blur', handleBlur);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
-  const handleLoadSample = () => {
-    loadSampleProject();
-    setMessage('Sample project loaded successfully!');
-    setTimeout(() => setMessage(''), 3000);
+  const handleLoadSample = async (key?: string) => {
+    try {
+      await loadSampleProject(key);
+      const title = key ? getSampleTitle(key) : 'Sample project';
+      setMessage(`${title} loaded successfully!`);
+      setShowSampleDropdown(false);
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      setMessage('Failed to load sample project');
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
+
+  const handleSampleButtonClick = () => {
+    if (SAMPLE_FILES.length === 1) {
+      // Single sample - load directly
+      handleLoadSample(SAMPLE_FILES[0].key);
+    } else {
+      // Multiple samples - show dropdown
+      setShowSampleDropdown(!showSampleDropdown);
+    }
   };
 
   const handleJSONImport = (event: React.MouseEvent) => {
@@ -149,13 +178,33 @@ export const ProjectControls: React.FC = () => {
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mb-8">
       <div className="flex flex-wrap gap-3 items-center mb-6">
-        <button
-          onClick={handleLoadSample}
-          className="bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
-        >
-          <span className="mr-2">🎬</span>
-          Load Sample
-        </button>
+        <div className="relative sample-dropdown-container">
+          <button
+            onClick={handleSampleButtonClick}
+            className="bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 flex items-center"
+          >
+            <span className="mr-2">🎬</span>
+            Load Sample
+            {SAMPLE_FILES.length > 1 && (
+              <span className="ml-2">{showSampleDropdown ? '▲' : '▼'}</span>
+            )}
+          </button>
+          
+          {showSampleDropdown && SAMPLE_FILES.length > 1 && (
+            <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 min-w-[200px] z-10">
+              {SAMPLE_FILES.map((sample) => (
+                <button
+                  key={sample.key}
+                  onClick={() => handleLoadSample(sample.key)}
+                  className="w-full text-left px-4 py-3 hover:bg-slate-50 first:rounded-t-xl last:rounded-b-xl transition-colors duration-200 flex items-center"
+                >
+                  <span className="mr-2">🎬</span>
+                  <span className="text-slate-700 font-medium">{sample.title}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
         
         <button
           onClick={handleJSONImport}

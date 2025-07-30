@@ -1,0 +1,73 @@
+{
+  "video": {
+    "title": "Master Chef's Kitchen Adventures",
+    "description": "A professional cooking show featuring gourmet recipes and culinary techniques.",
+    "style": "Warm Kitchen Ambiance",
+    "default_image_size": "1920x1080",
+    "transcriptions": {
+      "storyboard": "Professional cooking demonstration scenes",
+      "narrative": "An elegant cooking show with step-by-step gourmet preparation"
+    },
+    "chapters": [
+      {
+        "chapter_title": "Preparation",
+        "chapter_file_name": "1-preparation",
+        "style": "Clean Kitchen Aesthetic",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "scene_description": "Chef arranging ingredients on marble countertop.",
+            "style": "Professional and Clean",
+            "prompts": [
+              {
+                "prompt_text": "Professional chef in white uniform arranging colorful fresh ingredients on a pristine marble countertop, warm kitchen lighting",
+                "image_size": "1024x1024",
+                "aspect_ratio": "1:1",
+                "seed": 11111,
+                "approval_status": 1,
+                "file_name": "1-1-1-ingredient-prep",
+                "created_at": "2025-07-30"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "chapter_title": "Cooking Process",
+        "chapter_file_name": "2-cooking",
+        "style": "Action and Movement",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "scene_description": "Chef demonstrating knife skills with precise cuts.",
+            "style": "Dynamic Kitchen Action",
+            "prompts": [
+              {
+                "prompt_text": "Professional chef's hands demonstrating precise knife cuts on fresh vegetables, steam rising from nearby pans, cinematic kitchen lighting",
+                "image_size": "1024x1024",
+                "aspect_ratio": "1:1",
+                "seed": 22222,
+                "approval_status": 1,
+                "file_name": "2-1-1-knife-skills",
+                "created_at": "2025-07-30",
+                "image": {
+                  "path": "output/2-1-1-knife-skills.png",
+                  "approved": true
+                }
+              },
+              {
+                "prompt_text": "Close-up of sizzling ingredients in a professional steel pan with dramatic flame underneath",
+                "image_size": "1024x1024",
+                "aspect_ratio": "1:1",
+                "seed": 22223,
+                "approval_status": 1,
+                "file_name": "2-1-2-sizzling-pan",
+                "created_at": "2025-07-30"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

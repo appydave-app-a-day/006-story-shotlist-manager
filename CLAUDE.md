@@ -84,6 +84,25 @@ pnpm typecheck
 pnpm lint
 ```
 
+## Sample Data System
+
+The application supports multiple sample JSON documents with automatic discovery:
+
+### Adding New Samples
+1. Create a new `.json` file in `/src/data/` using kebab-case naming (e.g., `fantasy-adventure.json`)
+2. Follow the standard project JSON structure
+3. The file will be automatically discovered and added to the dropdown on next build
+
+### File Naming Convention
+- Use kebab-case: `woman-and-cat.json`, `space-adventure.json`, `cooking-show.json`
+- Titles are auto-generated: `woman-and-cat` becomes "Woman And Cat"
+- Files are sorted alphabetically in the dropdown
+
+### Technical Implementation
+- Uses Vite's `import.meta.glob()` for build-time file discovery
+- No code changes required when adding new samples
+- Files are eagerly loaded at build time for optimal performance
+
 ## Implementation Guidelines
 
 1. **UI Structure**: Implement a hierarchical tree view that mirrors the Video → Chapter → Scene → Prompt structure
@@ -92,6 +111,7 @@ pnpm lint
    - `/src/components/` - UI components for each hierarchy level
    - `/src/types/` - TypeScript interfaces matching the JSON structure
    - `/src/utils/` - JSON/CSV import/export utilities
+   - `/src/data/` - Sample JSON documents (auto-discovered)
 4. **CSV Export**: Flatten the nested structure to: `a,category,filename,prompt,style,size,seed,n`
 
 ## Technology Stack Recommendations

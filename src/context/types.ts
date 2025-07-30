@@ -21,7 +21,7 @@ export interface ProjectContextType {
   state: ProjectState;
   dispatch: React.Dispatch<ProjectAction>;
   loadProject: (project: Project) => void;
-  loadSampleProject: () => void;
+  loadSampleProject: (key?: string) => Promise<void>;
   updateVideo: (updates: Partial<Video>) => void;
   addChapter: (chapter: Chapter) => void;
   updateChapter: (index: number, updates: Partial<Chapter>) => void;

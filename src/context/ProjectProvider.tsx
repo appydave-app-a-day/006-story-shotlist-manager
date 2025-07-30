@@ -4,7 +4,7 @@ import type { ProjectContextType, ProjectState } from './types';
 import type { Project, Video, Chapter, Scene, Prompt } from '../types';
 import { ProjectContext } from './ProjectContext';
 import { projectReducer } from './reducer';
-import { getSampleProject } from '../utils/sampleData';
+import { loadSampleProject as loadSample } from '../utils/sampleData';
 
 export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(projectReducer, { project: null } as ProjectState);
@@ -13,9 +13,15 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children })
     dispatch({ type: 'LOAD_PROJECT', payload: project });
   };
 
-  const loadSampleProject = () => {
-    const sampleProject = getSampleProject();
-    dispatch({ type: 'LOAD_PROJECT', payload: sampleProject });
+  const loadSampleProject = async (key?: string) => {
+    try {
+      const sampleProject = await loadSample(key || 'woman-and-cat');
+      if (sampleProject) {
+        dispatch({ type: 'LOAD_PROJECT', payload: sampleProject });
+      }
+    } catch (error) {
+      console.error('Failed to load sample project:', error);
+    }
   };
 
   const updateVideo = (updates: Partial<Video>) => {

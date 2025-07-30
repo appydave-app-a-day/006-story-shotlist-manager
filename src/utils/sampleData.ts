@@ -1,121 +1,64 @@
 import type { Project } from '../types';
 
-export const getSampleProject = (): Project => ({
-  video: {
-    title: "A Day in the Life of a Woman and Her Cat",
-    description: "A glimpse into the daily adventures of a woman and her cat.",
-    style: "Soft Pastel Aesthetic",
-    default_image_size: "1920x1080",
-    transcriptions: {
-      storyboard: "Morning scenes of a woman and her cat",
-      narrative: "A peaceful morning routine shared between a woman and her beloved cat"
-    },
-    chapters: [
-      {
-        chapter_title: "Morning Routine",
-        chapter_file_name: "1-morning-routine",
-        style: "Golden Morning Light",
-        scenes: [
-          {
-            scene_number: 1,
-            scene_description: "The woman wakes up to her cat snuggling next to her.",
-            style: "Warm and Cozy",
-            prompts: [
-              {
-                prompt_text: "A soft morning scene with a woman and her cat snuggling in bed, golden sunlight streaming through the window, peaceful and warm atmosphere",
-                image_size: "1024x1024",
-                aspect_ratio: "1:1",
-                seed: 12345,
-                approval_status: 1,
-                file_name: "1-1-1-wake-up-snuggle",
-                created_at: "2025-07-30",
-                image: {
-                  path: "output/1-1-1-wake-up-snuggle.png",
-                  approved: true
-                }
-              },
-              {
-                prompt_text: "Close-up of the woman's peaceful sleeping face with her cat curled up next to her pillow, soft morning light",
-                image_size: "1024x1024",
-                aspect_ratio: "1:1",
-                seed: 12346,
-                approval_status: 1,
-                file_name: "1-1-2-peaceful-sleep",
-                created_at: "2025-07-30",
-                image: {
-                  path: "output/1-1-2-peaceful-sleep.png",
-                  approved: false
-                }
-              }
-            ]
-          },
-          {
-            scene_number: 2,
-            scene_description: "Breakfast chaos as the cat tries to steal food.",
-            style: "Bright and Playful",
-            prompts: [
-              {
-                prompt_text: "A playful kitchen scene with a woman preparing breakfast while her mischievous cat tries to steal food from the counter",
-                image_size: "1024x1024",
-                aspect_ratio: "1:1",
-                seed: 67890,
-                approval_status: 1,
-                file_name: "1-2-1-breakfast-chaos",
-                created_at: "2025-07-30",
-                image: {
-                  path: "output/1-2-1-breakfast-chaos.png",
-                  approved: true
-                }
-              },
-              {
-                prompt_text: "Close-up of the cat's paws reaching for toast on the kitchen counter, morning lighting",
-                image_size: "1024x1024",
-                aspect_ratio: "1:1",
-                seed: 67891,
-                approval_status: 1,
-                file_name: "1-2-2-cat-paws-toast",
-                created_at: "2025-07-30"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        chapter_title: "Afternoon Adventures",
-        chapter_file_name: "2-afternoon-adventures",
-        style: "Bright Daylight",
-        scenes: [
-          {
-            scene_number: 1,
-            scene_description: "Playing with cat toys in the living room.",
-            style: "Energetic and Fun",
-            prompts: [
-              {
-                prompt_text: "A lively living room scene with a woman playing with her cat using various toys, sunlight filling the space",
-                image_size: "1024x1024",
-                aspect_ratio: "1:1",
-                seed: 11111,
-                approval_status: 1,
-                file_name: "2-1-1-toy-playtime",
-                created_at: "2025-07-30"
-              },
-              {
-                prompt_text: "The cat pouncing on a feather toy while the woman laughs in the background, bright afternoon light",
-                image_size: "1024x1024",
-                aspect_ratio: "1:1",
-                seed: 11112,
-                approval_status: 1,
-                file_name: "2-1-2-cat-pounce-feather",
-                created_at: "2025-07-30",
-                image: {
-                  path: "output/2-1-2-cat-pounce-feather.png",
-                  approved: false
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+// Sample data file definitions
+export interface SampleFile {
+  key: string;
+  title: string;
+  filename: string;
+}
+
+// Dynamically discover all sample files using Vite's import.meta.glob
+const sampleModules = import.meta.glob('../data/*.json', { eager: true });
+
+// Generate SAMPLE_FILES array from discovered files
+export const SAMPLE_FILES: SampleFile[] = Object.keys(sampleModules).map(path => {
+  // Extract filename without path and extension: ../data/woman-and-cat.json -> woman-and-cat
+  const filename = path.split('/').pop()!;
+  const key = filename.replace('.json', '');
+  
+  // Convert kebab-case to Title Case: woman-and-cat -> Woman And Cat
+  const title = key
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  
+  return {
+    key,
+    title,
+    filename
+  };
+}).sort((a, b) => a.title.localeCompare(b.title)); // Sort alphabetically by title
+
+// Dynamically import and load a sample project
+export const loadSampleProject = async (key: string): Promise<Project | null> => {
+  try {
+    // Find the matching module from our pre-loaded modules
+    const modulePath = `../data/${key}.json`;
+    const module = sampleModules[modulePath] as { default: Project };
+    
+    if (!module) {
+      throw new Error(`Sample file not found: ${key}.json`);
+    }
+    
+    return module.default;
+  } catch (error) {
+    console.error(`Failed to load sample project "${key}":`, error);
+    return null;
   }
-});
+};
+
+// Load the default sample (backward compatibility)
+export const getSampleProject = async (): Promise<Project | null> => {
+  // Use the first available sample file, or fallback to woman-and-cat
+  const defaultKey = SAMPLE_FILES.length > 0 
+    ? SAMPLE_FILES.find(f => f.key === 'woman-and-cat')?.key || SAMPLE_FILES[0].key
+    : 'woman-and-cat';
+  
+  return loadSampleProject(defaultKey);
+};
+
+// Get a human-readable title for a sample key
+export const getSampleTitle = (key: string): string => {
+  const sample = SAMPLE_FILES.find(s => s.key === key);
+  return sample?.title || key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+};
