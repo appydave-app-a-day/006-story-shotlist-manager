@@ -11,8 +11,7 @@ export interface Prompt {
   approval_status?: number;
   file_name: string;
   created_at?: string;
-  image_a?: ImageData;
-  image_b?: ImageData;
+  image?: ImageData;
 }
 
 export interface Scene {

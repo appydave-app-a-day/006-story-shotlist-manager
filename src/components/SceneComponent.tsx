@@ -52,7 +52,7 @@ export const SceneComponent: React.FC<SceneComponentProps> = ({ scene, chapterIn
 
   return (
     <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden ml-4">
-      <div className="bg-gradient-to-r from-amber-500 to-yellow-600 p-5">
+      <div className="bg-gradient-to-r from-amber-400 to-yellow-400 p-5">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -147,7 +147,7 @@ export const SceneComponent: React.FC<SceneComponentProps> = ({ scene, chapterIn
           <div className="pt-4 border-t border-slate-200">
             <button
               onClick={handleAddPrompt}
-              className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 flex items-center gap-2"
+              className="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white px-5 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 flex items-center gap-2"
             >
               <span className="text-lg">➕</span>
               <span>Add Prompt</span>

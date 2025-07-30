@@ -29,12 +29,21 @@ export const getSampleProject = (): Project => ({
                 approval_status: 1,
                 file_name: "1-1-1-wake-up-snuggle",
                 created_at: "2025-07-30",
-                image_a: {
+                image: {
                   path: "output/1-1-1-wake-up-snuggle.png",
                   approved: true
-                },
-                image_b: {
-                  path: "output/1-1-1-wake-up-snuggle-b.png",
+                }
+              },
+              {
+                prompt_text: "Close-up of the woman's peaceful sleeping face with her cat curled up next to her pillow, soft morning light",
+                image_size: "1024x1024",
+                aspect_ratio: "1:1",
+                seed: 12346,
+                approval_status: 1,
+                file_name: "1-1-2-peaceful-sleep",
+                created_at: "2025-07-30",
+                image: {
+                  path: "output/1-1-2-peaceful-sleep.png",
                   approved: false
                 }
               }
@@ -53,14 +62,19 @@ export const getSampleProject = (): Project => ({
                 approval_status: 1,
                 file_name: "1-2-1-breakfast-chaos",
                 created_at: "2025-07-30",
-                image_a: {
+                image: {
                   path: "output/1-2-1-breakfast-chaos.png",
-                  approved: false
-                },
-                image_b: {
-                  path: "output/1-2-1-breakfast-chaos-b.png",
                   approved: true
                 }
+              },
+              {
+                prompt_text: "Close-up of the cat's paws reaching for toast on the kitchen counter, morning lighting",
+                image_size: "1024x1024",
+                aspect_ratio: "1:1",
+                seed: 67891,
+                approval_status: 1,
+                file_name: "1-2-2-cat-paws-toast",
+                created_at: "2025-07-30"
               }
             ]
           }
@@ -84,6 +98,19 @@ export const getSampleProject = (): Project => ({
                 approval_status: 1,
                 file_name: "2-1-1-toy-playtime",
                 created_at: "2025-07-30"
+              },
+              {
+                prompt_text: "The cat pouncing on a feather toy while the woman laughs in the background, bright afternoon light",
+                image_size: "1024x1024",
+                aspect_ratio: "1:1",
+                seed: 11112,
+                approval_status: 1,
+                file_name: "2-1-2-cat-pounce-feather",
+                created_at: "2025-07-30",
+                image: {
+                  path: "output/2-1-2-cat-pounce-feather.png",
+                  approved: false
+                }
               }
             ]
           }

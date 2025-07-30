@@ -53,7 +53,7 @@ export const ChapterComponent: React.FC<ChapterComponentProps> = ({ chapter, cha
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden ml-4">
-      <div className="bg-gradient-to-r from-emerald-500 to-green-600 p-6">
+      <div className="bg-gradient-to-r from-emerald-400 to-green-400 p-6">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -148,7 +148,7 @@ export const ChapterComponent: React.FC<ChapterComponentProps> = ({ chapter, cha
           <div className="pt-4 border-t border-slate-200">
             <button
               onClick={handleAddScene}
-              className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 flex items-center gap-2"
+              className="bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 flex items-center gap-2"
             >
               <span className="text-lg">➕</span>
               <span>Add Scene</span>

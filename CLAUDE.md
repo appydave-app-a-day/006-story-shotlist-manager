@@ -17,7 +17,8 @@ The application manages a four-level hierarchy:
 Core features include:
 - JSON import/export for project data
 - CSV export for prompt injection workflows
-- A/B image comparison for each prompt
+- Single image per prompt (no A/B testing)
+- Multiple prompts per scene
 - Persistent "Load Sample" button and JSON paste area
 
 ## Data Structure
@@ -33,14 +34,34 @@ The application works with this JSON structure:
         "scene_number": "number",
         "prompts": [{
           "prompt_text": "string",
-          "image_a": { "path": "string", "approved": "boolean" },
-          "image_b": { "path": "string", "approved": "boolean" }
+          "image": { "path": "string", "approved": "boolean" }
         }]
       }]
     }]
   }
 }
 ```
+
+## UX Best Practices
+
+### Clipboard-First Interactions
+- **Default behavior**: Use clipboard for better user experience
+- **Modifier key behavior**: Hold Ctrl/Cmd for file system operations
+- **CSV Export**: Copy to clipboard by default, Ctrl+click to download file
+- **JSON Export**: Copy to clipboard by default, Ctrl+click to download file
+- **JSON Import**: Paste from clipboard by default, Ctrl+click to upload file
+
+### Button Design Patterns
+- Primary action should be the most common use case (clipboard)
+- Secondary action available via modifier key (file system)
+- **Real-time visual feedback**: Button text and icons change when Ctrl/Cmd is pressed
+- **Visual indicators**: Ring effect around buttons when modifier key is active
+- **Dynamic content**: 
+  - Default: "📋 Load JSON", "📋 Save JSON", "📋 Save CSV"
+  - Modifier pressed: "💾 Load JSON", "💾 Save JSON", "💾 Save CSV"
+  - Only two icons used: 📋 for clipboard operations, 💾 for file operations
+  - Single icon at beginning of button - no duplicate icons
+- Tooltips explaining modifier key behavior (fallback)
 
 ## Development Commands
 

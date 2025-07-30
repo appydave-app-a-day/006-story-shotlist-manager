@@ -41,7 +41,7 @@ export const VideoComponent: React.FC = () => {
 
   return (
     <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-8">
+      <div className="bg-gradient-to-r from-blue-400 to-indigo-400 p-8">
         <div className="flex items-center gap-4 mb-4">
           <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-3xl">
             📽️
@@ -62,7 +62,7 @@ export const VideoComponent: React.FC = () => {
               />
               <button
                 onClick={handleTitleSave}
-                className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg transition-all duration-200"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-semibold shadow-lg transition-all duration-200"
               >
                 ✅ Save
               </button>
@@ -130,7 +130,7 @@ export const VideoComponent: React.FC = () => {
         <div className="mt-8 pt-6 border-t border-slate-200">
           <button
             onClick={handleAddChapter}
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 flex items-center gap-3"
+            className="bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white px-6 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 flex items-center gap-3"
           >
             <span className="text-xl">➕</span>
             <span>Add New Chapter</span>

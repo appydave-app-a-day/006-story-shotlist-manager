@@ -43,7 +43,7 @@ export const PromptComponent: React.FC<PromptComponentProps> = ({
     }
   };
 
-  const handleImageUpload = (imageType: 'image_a' | 'image_b', file: File) => {
+  const handleImageUpload = (file: File) => {
     // In a real app, you'd upload to a server here
     // For now, we'll just create a mock path
     const imagePath = `uploads/${file.name}`;
@@ -52,48 +52,48 @@ export const PromptComponent: React.FC<PromptComponentProps> = ({
       approved: false
     };
     
-    updatePrompt(chapterIndex, sceneIndex, promptIndex, { [imageType]: imageData });
+    updatePrompt(chapterIndex, sceneIndex, promptIndex, { image: imageData });
   };
 
-  const handleImageApproval = (imageType: 'image_a' | 'image_b', approved: boolean) => {
-    const currentImage = prompt[imageType];
+  const handleImageApproval = (approved: boolean) => {
+    const currentImage = prompt.image;
     if (currentImage) {
       const updatedImage: ImageData = { ...currentImage, approved };
-      updatePrompt(chapterIndex, sceneIndex, promptIndex, { [imageType]: updatedImage });
+      updatePrompt(chapterIndex, sceneIndex, promptIndex, { image: updatedImage });
     }
   };
 
-  const handleImageRemove = (imageType: 'image_a' | 'image_b') => {
-    updatePrompt(chapterIndex, sceneIndex, promptIndex, { [imageType]: undefined });
+  const handleImageRemove = () => {
+    updatePrompt(chapterIndex, sceneIndex, promptIndex, { image: undefined });
   };
 
-  const renderImageSection = (imageType: 'image_a' | 'image_b', label: string) => {
-    const image = prompt[imageType];
+  const renderImageSection = () => {
+    const image = prompt.image;
     
     return (
       <div className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gradient-to-r from-pink-400 to-rose-500 rounded-lg flex items-center justify-center text-white text-xs font-bold">
-              {imageType === 'image_a' ? 'A' : 'B'}
+              🖼️
             </div>
-            <span className="font-semibold text-slate-700">{label}</span>
+            <span className="font-semibold text-slate-700">Generated Image</span>
           </div>
           {image && (
             <div className="flex gap-2">
               <button
-                onClick={() => handleImageApproval(imageType, !image.approved)}
+                onClick={() => handleImageApproval(!image.approved)}
                 className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all duration-200 ${
                   image.approved 
-                    ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-lg' 
+                    ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white shadow-lg' 
                     : 'bg-gradient-to-r from-slate-300 to-slate-400 hover:from-slate-400 hover:to-slate-500 text-slate-700'
                 }`}
               >
                 {image.approved ? '✅ Approved' : '⏳ Approve'}
               </button>
               <button
-                onClick={() => handleImageRemove(imageType)}
-                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-3 py-1 rounded-lg text-xs font-semibold shadow-lg transition-all duration-200"
+                onClick={handleImageRemove}
+                className="bg-gradient-to-r from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 text-white px-3 py-1 rounded-lg text-xs font-semibold shadow-lg transition-all duration-200"
               >
                 🗑️ Remove
               </button>
@@ -129,12 +129,12 @@ export const PromptComponent: React.FC<PromptComponentProps> = ({
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) {
-                  handleImageUpload(imageType, file);
+                  handleImageUpload(file);
                 }
               }}
-              className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-pink-500 file:to-rose-500 file:text-white file:font-semibold hover:file:from-pink-600 hover:file:to-rose-600 file:shadow-lg file:transition-all file:duration-200"
+              className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-pink-400 file:to-rose-400 file:text-white file:font-semibold hover:file:from-pink-500 hover:file:to-rose-500 file:shadow-lg file:transition-all file:duration-200"
             />
-            <p className="text-xs text-slate-500 mt-2">Upload an image for this variant</p>
+            <p className="text-xs text-slate-500 mt-2">Upload generated image</p>
           </div>
         )}
       </div>
@@ -143,7 +143,7 @@ export const PromptComponent: React.FC<PromptComponentProps> = ({
 
   return (
     <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden ml-4">
-      <div className="bg-gradient-to-r from-pink-500 to-rose-600 p-5">
+      <div className="bg-gradient-to-r from-pink-400 to-rose-400 p-5">
         <div className="flex items-start gap-4">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -232,10 +232,7 @@ export const PromptComponent: React.FC<PromptComponentProps> = ({
 
       {isExpanded && (
         <div className="p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {renderImageSection('image_a', 'Image A')}
-            {renderImageSection('image_b', 'Image B')}
-          </div>
+          {renderImageSection()}
         </div>
       )}
     </div>
