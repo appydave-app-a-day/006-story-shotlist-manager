@@ -11,6 +11,48 @@ export const ProjectControls: React.FC = () => {
   const [isCtrlPressed, setIsCtrlPressed] = useState(false);
   const [showSampleDropdown, setShowSampleDropdown] = useState(false);
 
+  // Prompt template for ChatGPT story creation
+  const PROMPT_TEMPLATE = `I'm going to help you create a story structured specifically for visual storytelling and image generation.
+
+What I need from you:
+1. What kind of story do you want to create? (theme, genre, setting, characters)
+2. How many scenes would you like in total?
+3. Is there any other custom instruction you want me to consider?
+
+I will then format your story into this specific JSON structure:
+
+**Output Structure:**
+- Story Title
+  - Chapter/Section Name (intro/body/outro for videos, or narrative chapters)
+    - Scene Description (1-2 sentences, visually distinct moments)
+      - Prompt Variation 1 (first image generation approach)
+      - Prompt Variation 2 (second image generation approach)
+
+**JSON Format:**
+\`\`\`json
+{
+  "video": {
+    "title": "Your Story Title",
+    "chapters": [
+      {
+        "chapter_title": "Chapter/Section Name",
+        "scenes": [
+          {
+            "scene_description": "Visual scene description",
+            "prompts": [
+              {"prompt_text": "First image prompt variation"},
+              {"prompt_text": "Second image prompt variation"}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+\`\`\`
+
+Please provide your story concept, desired scene count, and any custom instructions, and I'll create the structured JSON outline for you.`;
+
   // Track Ctrl/Cmd key state for visual feedback
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -69,6 +111,17 @@ export const ProjectControls: React.FC = () => {
     } else {
       // Multiple samples - show dropdown
       setShowSampleDropdown(!showSampleDropdown);
+    }
+  };
+
+  const handleCopyPromptTemplate = async () => {
+    try {
+      await navigator.clipboard.writeText(PROMPT_TEMPLATE);
+      setMessage('Prompt template copied to clipboard!');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      setMessage('Failed to copy prompt template');
+      setTimeout(() => setMessage(''), 3000);
     }
   };
 
@@ -205,6 +258,14 @@ export const ProjectControls: React.FC = () => {
             </div>
           )}
         </div>
+
+        <button
+          onClick={handleCopyPromptTemplate}
+          className="bg-gradient-to-r from-indigo-400 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+        >
+          <span className="mr-2">🤖</span>
+          Copy AI Prompt
+        </button>
         
         <button
           onClick={handleJSONImport}
